@@ -64,8 +64,8 @@ DWORD GetPidByProcessName(WCHAR* name) {
 #define PROC_NAME L"S1GameProtected.exe"
 
 int main(int argc, char *argv[]) {
-	if (argc < 4) {
-		printf("USAGE : ContextSetter ADDRESS ADDRESS ADDRESS\n");
+	if (argc < 5) {
+		printf("USAGE : ContextSetter ADDRESS ADDRESS ADDRESS ADDRESS\n");
 		return 1;
 	}
 
@@ -81,7 +81,8 @@ int main(int argc, char *argv[]) {
 	ctx.Dr0 = (DWORD64)strtoull(argv[1], NULL, 16);
 	ctx.Dr1 = (DWORD64)strtoull(argv[2], NULL, 16);
 	ctx.Dr2 = (DWORD64)strtoull(argv[3], NULL, 16);
-	ctx.Dr7 |= (0x1 | 0x4 | 0x10);
+	ctx.Dr3 = (DWORD64)strtoull(argv[4], NULL, 16);
+	ctx.Dr7 |= (0x1 | 0x4 | 0x10 | 0x40 );
 
 	SetThreadContext(hThread, &ctx);
 	CloseHandle(hThread);
